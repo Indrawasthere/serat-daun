@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import data from '../../../public/data.json';
+import '../../../assets/scss/astro-ecommerce.scss';
+import Navbar from '../../components/navbar';
+import Footer from '../../components/footer';
+import ProductOverviewGrid from '../../components/products/productOverviewGrid';
+import CardProduct from '../../components/products/cardProduct';
+import ReviewSummaryChart from '../../components/reviews/reviewSummaryChart';
+
+// Generate static paths for all products
+export function getStaticPaths() {
+  return data.products.map(product => ({
+    params: { id: product.id },
+    props: { product }
+  }));
+}
+
+// Get the product from props
+const { product } = Astro.props;
+
+// Filter reviews for this product
+let productReviews = data.reviews.filter(x => x.productID === product.id);
+
+// Get other products for \"Customers also purchased\" section
+const otherProducts = data.products.filter(p => p.id !== product.id);
+
+// WhatsApp number
+const whatsappNumber = '6282312335006'; // Format internasional
+---
+
+<Layout title={`${product.title} - Serat Daun`}>
+  <main>
+    <Navbar client:load />
+    <div class=\"container mt-5\">
+      <ProductOverviewGrid
+        client:load
+        colors={product.colors || []}
+        images={product.images || []}
+        title={product.title}
+        full_description={product.full_description || product.description}
+        price={product.price}
+        highlights={product.highlights || []}
+        details={product.details || ''}
+        rating={product.rating || 0}
+        reviews={product.reviews || 0}
+        sizes={product.sizes || {}}
+        productId={product.id}
+        whatsappNumber={whatsappNumber}
+      />
+
+      {productReviews.length > 0 && (
+        <div class=\"my-5\">
+          <ReviewSummaryChart client:load reviews={productReviews} />
+        </div>
+      )}
+
+      <div class=\"row mt-5\">
+        <h5 class=\"mb-4\">Produk Lainnya</h5>
+        {otherProducts.slice(0, 4).map(prod => (
+          <div class=\"col-md-6 col-lg-3\">
+            <CardProduct
+              client:load
+              thumb_src={prod.thumb_src}
+              thumb_alt={prod.thumb_alt || 'product-image'}
+              color={prod.color}
+              title={prod.title}
+              description={prod.description || ''}
+              price={prod.price}
+              colors={prod.colors || []}
+              position=\"left\"
+              productId={prod.id}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+    <Footer client:load />
+  </main>
+</Layout>
