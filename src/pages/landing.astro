@@ -2,108 +2,372 @@
 import Layout from "../layouts/Layout.astro";
 import data from "../../public/data.json";
 import "../../assets/scss/astro-ecommerce.scss";
+import { LanguageProvider } from "../contexts/LanguageContext";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import CardProduct from "../components/products/cardProduct";
 import TestimonialsFade from "../components/promo/testimonialsFade";
 ---
 
-<Layout title="Serat Daun - Produk Berkualitas">
+<Layout title="Serat Daun - Tanaman Hias Premium">
     <main>
-        <Navbar client:load />
+        <LanguageProvider client:load>
+            <Navbar client:load />
 
-        <!-- Hero Section -->
-        <div
-            class="page-header min-vh-75"
-            style="background-image: url('../images/bg2.jpg'); background-size: cover; background-position: center;"
-        >
-            <span class="mask bg-gradient-dark opacity-4"></span>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center mx-auto my-auto">
-                        <h1 class="text-white fade-in">
-                            Selamat Datang di Serat Daun
-                        </h1>
-                        <p class="lead text-white opacity-8 mt-3">
-                            Koleksi produk berkualitas pilihan terbaik untuk
-                            Anda
-                        </p>
-                        <a href="#products" class="btn btn-lg btn-white mt-4"
-                            >Lihat Produk</a
-                        >
+            <!-- Hero Section with Plant Theme -->
+            <div
+                class="page-header min-vh-75 hero-section"
+                style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.9) 0%, rgba(16, 185, 129, 0.85) 50%, rgba(52, 211, 153, 0.8) 100%), url('https://images.unsplash.com/photo-1545165375-1b744b9ed7ec?w=1920&q=80'); background-size: cover; background-position: center; background-attachment: fixed;"
+            >
+                <span class="mask opacity-2"></span>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center mx-auto my-auto">
+                            <h1
+                                class="text-white fade-in-up hero-title"
+                                id="hero-title"
+                            >
+                                Selamat Datang di Serat Daun
+                            </h1>
+                            <p
+                                class="lead text-white opacity-9 mt-4 fade-in-up"
+                                style="animation-delay: 0.2s;"
+                                id="hero-subtitle"
+                            >
+                                Koleksi produk berkualitas pilihan terbaik untuk
+                                Anda
+                            </p>
+                            <a
+                                href="#products"
+                                class="btn btn-lg btn-light mt-5 fade-in-up pulse-hover"
+                                style="animation-delay: 0.4s; border-radius: 30px; padding: 15px 40px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"
+                                id="hero-cta"
+                            >
+                                Lihat Produk
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="container my-5" id="products">
-            <!-- Featured Products Section -->
-            <div class="d-block text-center mb-5">
-                <h2 class="font-weight-bold">Produk Unggulan</h2>
-                <p class="text-body">
-                    Temukan produk terbaik kami dengan kualitas premium
-                </p>
-            </div>
-
-            <div class="row mb-5">
-                {
-                    data.products.map((product) => (
-                        <div class="col-md-6 col-lg-3 mb-4">
-                            <CardProduct
-                                client:load
-                                thumb_src={product.thumb_src}
-                                thumb_alt={product.thumb_alt || "product-image"}
-                                color={product.color}
-                                title={product.title}
-                                description={product.description || ""}
-                                price={product.price}
-                                colors={product.colors || []}
-                                position="center"
-                                productId={product.id}
-                            />
-                        </div>
-                    ))
-                }
-            </div>
-
-            <!-- Categories Section -->
-            <div class="my-10">
-                <div class="d-block text-center mb-5">
-                    <h3>Jelajahi Kategori</h3>
-                    <p class="text-body">
-                        Temukan berbagai pilihan produk berdasarkan kategori
-                    </p>
+                <!-- Floating Plant Decorations -->
+                <div class="floating-leaves">
+                    <div class="leaf leaf-1">🌿</div>
+                    <div class="leaf leaf-2">🍃</div>
+                    <div class="leaf leaf-3">🌱</div>
+                    <div class="leaf leaf-4">🌿</div>
                 </div>
             </div>
 
-            <!-- Testimonials Section -->
-            <div class="mt-8 mb-10">
-                <h3 class="text-center mb-5">Apa Kata Pelanggan Kami</h3>
-                <TestimonialsFade
-                    client:load
-                    pageHeaderBgImg="https://images.unsplash.com/photo-1519642918688-7e43b19245d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2676&q=80"
-                    pageHeaderMinVh="50vh"
-                />
-            </div>
-        </div>
+            <div class="container my-5" id="products">
+                <!-- Featured Products Section -->
+                <div class="d-block text-center mb-5 fade-in-section">
+                    <h2
+                        class="font-weight-bold"
+                        style="color: #059669;"
+                        id="featured-title"
+                    >
+                        Produk Unggulan
+                    </h2>
+                    <p class="text-body" id="featured-desc">
+                        Temukan produk terbaik kami dengan kualitas premium
+                    </p>
+                    <div class="title-underline mx-auto"></div>
+                </div>
 
-        <Footer client:load />
+                <div class="row mb-5">
+                    {
+                        data.products.map((product, index) => (
+                            <div
+                                class={`col-md-6 col-lg-3 mb-4 product-card-wrapper fade-in-section`}
+                                style={`animation-delay: ${index * 0.1}s;`}
+                            >
+                                <CardProduct
+                                    client:load
+                                    thumb_src={product.thumb_src}
+                                    thumb_alt={
+                                        product.thumb_alt || "product-image"
+                                    }
+                                    color={product.color}
+                                    title={product.title}
+                                    description={product.description || ""}
+                                    price={product.price}
+                                    colors={product.colors || []}
+                                    position="center"
+                                    productId={product.id}
+                                />
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Categories Section with Plant Vibe -->
+                <div class="my-10">
+                    <div class="d-block text-center mb-5 fade-in-section">
+                        <h3 style="color: #059669;" id="categories-title">
+                            Jelajahi Kategori
+                        </h3>
+                        <p class="text-body" id="categories-desc">
+                            Temukan berbagai pilihan produk berdasarkan kategori
+                        </p>
+                        <div class="title-underline mx-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Section -->
+                <div class="mt-8 mb-10 fade-in-section">
+                    <h3
+                        class="text-center mb-5"
+                        style="color: #059669;"
+                        id="testimonials-title"
+                    >
+                        Apa Kata Pelanggan Kami
+                    </h3>
+                    <TestimonialsFade
+                        client:load
+                        pageHeaderBgImg="https://images.unsplash.com/photo-1463320726281-696a485928c7?w=2000&q=80"
+                        pageHeaderMinVh="50vh"
+                    />
+                </div>
+            </div>
+
+            <Footer client:load />
+        </LanguageProvider>
     </main>
 </Layout>
 
 <style>
-    .fade-in {
-        animation: fadeIn 1s ease-in;
+    /* Hero Animations */
+    .fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeInUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
+
+    /* Scroll Fade In */
+    .fade-in-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+            opacity 0.8s ease-out,
+            transform 0.8s ease-out;
+    }
+
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Floating Leaves Animation */
+    .floating-leaves {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .leaf {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.6;
+        animation: float 15s ease-in-out infinite;
+    }
+
+    .leaf-1 {
+        left: 10%;
+        top: 20%;
+        animation-delay: 0s;
+    }
+
+    .leaf-2 {
+        right: 15%;
+        top: 30%;
+        animation-delay: 3s;
+    }
+
+    .leaf-3 {
+        left: 20%;
+        bottom: 30%;
+        animation-delay: 6s;
+    }
+
+    .leaf-4 {
+        right: 10%;
+        bottom: 20%;
+        animation-delay: 9s;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+        50% {
+            transform: translateY(0) rotate(0deg);
+        }
+        75% {
+            transform: translateY(20px) rotate(-5deg);
+        }
+    }
+
+    /* Title Underline */
+    .title-underline {
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(to right, #059669, #10b981, #34d399);
+        border-radius: 2px;
+        margin-top: 10px;
+    }
+
+    /* Hero Title Styles */
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.5px;
+    }
+
+    /* Button Hover Effect */
+    .pulse-hover:hover {
+        animation: pulse 0.6s ease-in-out;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            transform: translateY(-3px) scale(1);
+        }
+        50% {
+            transform: translateY(-3px) scale(1.05);
+        }
+    }
+
+    /* Product Card Wrapper Animation */
+    .product-card-wrapper {
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .product-card-wrapper:hover {
+        transform: translateY(-10px);
+    }
+
+    /* Hero Section Parallax Effect */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .leaf {
+            font-size: 1.5rem;
+        }
+    }
 </style>
+
+<script>
+    // Intersection Observer for scroll animations
+    document.addEventListener("DOMContentLoaded", () => {
+        const faders = document.querySelectorAll(".fade-in-section");
+
+        const appearOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px",
+        };
+
+        const appearOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach((fader) => {
+            appearOnScroll.observe(fader);
+        });
+
+        // Update translations based on language
+        const updateTranslations = () => {
+            const lang = localStorage.getItem("serat-daun-language") || "id";
+
+            const translations = {
+                hero_title: {
+                    id: "Selamat Datang di Serat Daun",
+                    en: "Welcome to Serat Daun",
+                },
+                hero_subtitle: {
+                    id: "Koleksi produk berkualitas pilihan terbaik untuk Anda",
+                    en: "Premium quality plant collection for your green sanctuary",
+                },
+                hero_cta: {
+                    id: "Lihat Produk",
+                    en: "Browse Plants",
+                },
+                featured_title: {
+                    id: "Produk Unggulan",
+                    en: "Featured Plants",
+                },
+                featured_desc: {
+                    id: "Temukan produk terbaik kami dengan kualitas premium",
+                    en: "Discover our finest selection of premium quality plants",
+                },
+                categories_title: {
+                    id: "Jelajahi Kategori",
+                    en: "Explore Categories",
+                },
+                categories_desc: {
+                    id: "Temukan berbagai pilihan produk berdasarkan kategori",
+                    en: "Find various products based on categories",
+                },
+                testimonials_title: {
+                    id: "Apa Kata Pelanggan Kami",
+                    en: "What Our Customers Say",
+                },
+            };
+
+            Object.keys(translations).forEach((key) => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = translations[key][lang];
+                }
+            });
+        };
+
+        // Initial translation
+        updateTranslations();
+
+        // Listen for language changes
+        window.addEventListener("storage", (e) => {
+            if (e.key === "serat-daun-language") {
+                updateTranslations();
+            }
+        });
+    });
+</script>
